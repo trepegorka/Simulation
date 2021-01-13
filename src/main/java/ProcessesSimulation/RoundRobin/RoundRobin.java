@@ -11,7 +11,7 @@ public class RoundRobin implements Algorithm {
     // max time for process in round
     private final int timeForProcess;
     private int totalTimeForSimulation = 0;
-    private boolean fastMode;
+    private final boolean fastMode;
 
     public int getTotalTimeForSimulation() {
         return totalTimeForSimulation;
@@ -22,7 +22,7 @@ public class RoundRobin implements Algorithm {
         this.fastMode = fastMode;
     }
 
-
+    //RR algorithm
     @Override
     public void run() throws Exception {
         System.out.println("\n================= ROUND ROBIN SIMULATION =================");
@@ -33,6 +33,9 @@ public class RoundRobin implements Algorithm {
                 }
                 for (int i = 0; i < timeForProcess; i++) {
                     if (!process.getKey().isComplete()) {
+                        if (!process.getKey().isCanBeInterrupted()) {
+                            i--;
+                        }
                         setWaitingAndCompleteTimeForProcesses(process.getKey());
                         process.getKey().setLeftTime(process.getKey().getLeftTime() - 1);
                         double completed = Precision.round(100 - process.getKey().getLeftTime() / ((double) process.getKey().getBurstTime() / 100), 1);
@@ -46,6 +49,12 @@ public class RoundRobin implements Algorithm {
                                 break;
                             case 54:
                                 output += "  |";
+                                break;
+                            case 55:
+                                output += " |";
+                                break;
+                            case 56:
+                                output += "|";
                                 break;
                         }
                         System.out.println(output);

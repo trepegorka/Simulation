@@ -1,6 +1,8 @@
 package ProcessesSimulation;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 
 // Class Work is sigle for all simulation. Singleton PATTERN
 public class Work {
@@ -28,10 +30,10 @@ public class Work {
         return instance;
     }
 
-    public Boolean areCompleted(){
+    public Boolean areCompleted() {
         int mapSize = processes.size();
-        for (Map.Entry<Process, String> process : processes.entrySet()){
-            if(process.getKey().isComplete()){
+        for (Map.Entry<Process, String> process : processes.entrySet()) {
+            if (process.getKey().isComplete()) {
                 mapSize--;
             }
         }
@@ -41,4 +43,6 @@ public class Work {
     public void start(Algorithm algorithm) throws Exception {
         algorithm.run();
     }
+
+
 }

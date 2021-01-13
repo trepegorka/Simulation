@@ -5,6 +5,7 @@ public class Process {
     private int leftTime;
     private int completedIn = 0;
     private int totalWaitingTime = 0;
+    private final boolean canBeInterrupted;
 
     public int getTotalWaitingTime() {
         return totalWaitingTime;
@@ -38,8 +39,13 @@ public class Process {
         return leftTime == 0;
     }
 
-    public Process(int burstTime) {
+    public boolean isCanBeInterrupted() {
+        return canBeInterrupted;
+    }
+
+    public Process(int burstTime, boolean canBeInterrupted) {
         this.burstTime = burstTime;
         this.leftTime = burstTime;
+        this.canBeInterrupted = canBeInterrupted;
     }
 }
