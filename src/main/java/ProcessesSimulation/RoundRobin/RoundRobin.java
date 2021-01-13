@@ -12,11 +12,13 @@ public class RoundRobin implements Algorithm {
     private final int timeForProcess;
     private int totalTimeForSimulation = 0;
     private final boolean fastMode;
+    private final boolean displayMode;
 
 
-    public RoundRobin(int timeForProcess, boolean fastMode) {
+    public RoundRobin(int timeForProcess, boolean fastMode, boolean displayMode) {
         this.timeForProcess = timeForProcess;
         this.fastMode = fastMode;
+        this.displayMode = displayMode;
     }
 
     @Override
@@ -59,7 +61,9 @@ public class RoundRobin implements Algorithm {
                                 output += "|";
                                 break;
                         }
-                        System.out.println(output);
+                        if (displayMode) {
+                            System.out.println(output);
+                        }
                         totalTimeForSimulation++;
                         if (!fastMode) {
                             Thread.sleep(100);

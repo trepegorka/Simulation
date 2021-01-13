@@ -34,13 +34,12 @@ public class Main {
 
         //FastMode: sleep 100ml with FALSE. Change to TRUE for fast display.
         //Time for process mean how much time process will be used in round
-        Algorithm roundRobin = new RoundRobin(4, true);
+        Algorithm roundRobin = new RoundRobin(4, true, false);
         Work.getWork(processesForRR).start(roundRobin);
         roundRobin.displaySimulation(roundRobin, processesForRR);
 
-        System.out.println("\n\n\n********************************************************\n\n\n");
-
-        Algorithm FCFS = new FCFS(true);
+        System.out.println("\n\n");
+        Algorithm FCFS = new FCFS(true, false);
         Work.getWork(processesForFCFS).start(FCFS);
         FCFS.displaySimulation(FCFS, processesForFCFS);
     }

@@ -10,9 +10,11 @@ import java.util.Map;
 public class FCFS implements Algorithm {
     private int totalTimeForSimulation = 0;
     private final boolean fastMode;
+    private final boolean displayMode;
 
-    public FCFS(boolean fastMode) {
+    public FCFS(boolean fastMode, boolean displayMode) {
         this.fastMode = fastMode;
+        this.displayMode = displayMode;
     }
 
     @Override
@@ -54,7 +56,9 @@ public class FCFS implements Algorithm {
                                 output += "|";
                                 break;
                         }
-                        System.out.println(output);
+                        if (displayMode){
+                            System.out.println(output);
+                        }
                         totalTimeForSimulation++;
                         if (!fastMode) {
                             Thread.sleep(100);
