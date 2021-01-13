@@ -11,7 +11,8 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws Exception {
         // Map of processes to complete and their names
-        Map<Process, String> processes = new LinkedHashMap<>();
+        Map<Process, String> processesForRR = new LinkedHashMap<>();
+        Map<Process, String> processesForFCFS = new LinkedHashMap<>();
 
         //burstTime is a time for process to be completed
         Process p1 = new Process(24, false);
@@ -23,27 +24,33 @@ public class Main {
 //        processes.put(p2, "Process 2");
 //        processes.put(p3, "Process 3");
         // or generate them:
-        processes = generateProcesses(10);
+        processesForRR = generateProcesses(3);
+
+        // make maps equal for future compare
+        for (Map.Entry<Process, String> entry : processesForRR.entrySet()) {
+            processesForFCFS.put(new Process(entry.getKey().getBurstTime(), entry.getKey().isCanBeInterrupted()), entry.getValue());
+        }
+
 
         //FastMode: sleep 100ml with FALSE. Change to TRUE for fast display.
         //Time for process mean how much time process will be used in round
         Algorithm roundRobin = new RoundRobin(4, true);
-        Work.getWork(processes).start(roundRobin);
-        roundRobin.displaySimulation(roundRobin, processes);
+        Work.getWork(processesForRR).start(roundRobin);
+        roundRobin.displaySimulation(roundRobin, processesForRR);
 
         System.out.println("\n\n\n********************************************************\n\n\n");
 
-        processes = generateProcesses(10);
-        Algorithm FCFS = new FCFS( true);
-        Work.getWork(processes).start(FCFS);
-        FCFS.displaySimulation(FCFS, processes);
+        Algorithm FCFS = new FCFS(true);
+        Work.getWork(processesForFCFS).start(FCFS);
+        FCFS.displaySimulation(FCFS, processesForFCFS);
     }
 
     public static Map<Process, String> generateProcesses(int numberOfProcesses) {
         Map<Process, String> processes = new LinkedHashMap<>();
         for (int i = 0; i < numberOfProcesses; i++) {
             Random rand = new Random();
-            int burstTime = rand.nextInt((100 - 1) + 1) + 1;
+            //30 max burstTime.
+            int burstTime = rand.nextInt((30 - 1) + 1) + 1;
             int trueFalse = rand.nextInt((2 - 1) + 1) + 1;
             boolean isInterrupted;
             isInterrupted = trueFalse == 1;
