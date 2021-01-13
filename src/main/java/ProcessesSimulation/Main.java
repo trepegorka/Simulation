@@ -1,5 +1,6 @@
 package ProcessesSimulation;
 
+import ProcessesSimulation.FCFS.FCFS;
 import ProcessesSimulation.RoundRobin.RoundRobin;
 import org.apache.commons.math3.util.Precision;
 
@@ -22,47 +23,20 @@ public class Main {
 //        processes.put(p2, "Process 2");
 //        processes.put(p3, "Process 3");
         // or generate them:
-        processes = generateProcesses(100);
+        processes = generateProcesses(10);
 
         //FastMode: sleep 100ml with FALSE. Change to TRUE for fast display.
         //Time for process mean how much time process will be used in round
         Algorithm roundRobin = new RoundRobin(4, true);
         Work.getWork(processes).start(roundRobin);
-        displayRoundRobinSimulation(roundRobin, processes);
-    }
+        roundRobin.displaySimulation(roundRobin, processes);
 
-    //Round Robin console display
-    private static void displayRoundRobinSimulation(Algorithm roundRobin, Map<Process, String> processes){
-        System.out.println("==========================================================");
-        System.out.println("ROUND ROBIN TOTAL TIME: " + roundRobin.getTotalTimeForSimulation());
-        double averageWaitingTime = 0.0;
-        double averageTurnaroundTime = 0.0;
-        for (Map.Entry<Process, String> mapProcess : processes.entrySet()) {
-            String waiting = "WAITING TIME FOR PROCESS '" + mapProcess.getValue() + "': " + mapProcess.getKey().getTotalWaitingTime();
-            switch (waiting.length()){
-                case 38:
-                    waiting +="    ";
-                    break;
-                case 39:
-                    waiting +="   ";
-                    break;
-                case 40:
-                    waiting +="  ";
-                    break;
-                case 41:
-                    waiting +=" ";
-                    break;
-                default:
-                    waiting +="";
-                    break;
-            }
-            System.out.print("\n"+waiting);
-            System.out.print("\t|\tTURNAROUND TIME: " + mapProcess.getKey().getCompletedIn());
-            averageWaitingTime += mapProcess.getKey().getTotalWaitingTime();
-            averageTurnaroundTime += mapProcess.getKey().getCompletedIn();
-        }
-        System.out.println("\n\nAVERAGE WATING TIME FOR PROCESSES: " + Precision.round(averageWaitingTime/processes.size(), 1));
-        System.out.println("AVERAGE TURNAROUND TIME FOR PROCESSES: " + Precision.round(averageTurnaroundTime/processes.size(), 1));
+        System.out.println("\n\n\n********************************************************\n\n\n");
+
+        processes = generateProcesses(10);
+        Algorithm FCFS = new FCFS( true);
+        Work.getWork(processes).start(FCFS);
+        FCFS.displaySimulation(FCFS, processes);
     }
 
     public static Map<Process, String> generateProcesses(int numberOfProcesses) {

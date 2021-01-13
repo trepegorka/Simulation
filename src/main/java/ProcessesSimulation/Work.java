@@ -22,6 +22,8 @@ public class Work {
     public static Work getWork(Map<Process, String> processes) {
         if (instance == null) {
             instance = new Work(processes);
+        } else {
+            Work.processes = processes;
         }
         return instance;
     }
@@ -43,6 +45,4 @@ public class Work {
     public void start(Algorithm algorithm) throws Exception {
         algorithm.run();
     }
-
-
 }

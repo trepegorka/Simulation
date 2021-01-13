@@ -13,13 +13,15 @@ public class RoundRobin implements Algorithm {
     private int totalTimeForSimulation = 0;
     private final boolean fastMode;
 
-    public int getTotalTimeForSimulation() {
-        return totalTimeForSimulation;
-    }
 
     public RoundRobin(int timeForProcess, boolean fastMode) {
         this.timeForProcess = timeForProcess;
         this.fastMode = fastMode;
+    }
+
+    @Override
+    public int getTotalTimeForSimulation() {
+        return totalTimeForSimulation;
     }
 
     //RR algorithm
@@ -70,14 +72,38 @@ public class RoundRobin implements Algorithm {
         }
     }
 
-    private void setWaitingAndCompleteTimeForProcesses(Process process) {
-        for (Map.Entry<Process, String> mapProcess : Work.getWork().getProcesses().entrySet()) {
-            if (!mapProcess.getKey().equals(process) && !mapProcess.getKey().isComplete()) {
-                mapProcess.getKey().setTotalWaitingTime(mapProcess.getKey().getTotalWaitingTime() + 1);
+    //Round Robin console display
+    @Override
+    public void displaySimulation(Algorithm roundRobin, Map<Process, String> processes) {
+        System.out.println("==========================================================");
+        System.out.println("ROUND ROBIN TOTAL TIME: " + roundRobin.getTotalTimeForSimulation());
+        double averageWaitingTime = 0.0;
+        double averageTurnaroundTime = 0.0;
+        for (Map.Entry<Process, String> mapProcess : processes.entrySet()) {
+            String waiting = "WAITING TIME FOR PROCESS '" + mapProcess.getValue() + "': " + mapProcess.getKey().getTotalWaitingTime();
+            switch (waiting.length()) {
+                case 38:
+                    waiting += "    ";
+                    break;
+                case 39:
+                    waiting += "   ";
+                    break;
+                case 40:
+                    waiting += "  ";
+                    break;
+                case 41:
+                    waiting += " ";
+                    break;
+                default:
+                    waiting += "";
+                    break;
             }
-            if (!mapProcess.getKey().isComplete()) {
-                mapProcess.getKey().setCompletedIn(mapProcess.getKey().getCompletedIn() + 1);
-            }
+            System.out.print("\n" + waiting);
+            System.out.print("\t|\tTURNAROUND TIME: " + mapProcess.getKey().getCompletedIn());
+            averageWaitingTime += mapProcess.getKey().getTotalWaitingTime();
+            averageTurnaroundTime += mapProcess.getKey().getCompletedIn();
         }
+        System.out.println("\n\nAVERAGE WATING TIME FOR PROCESSES: " + Precision.round(averageWaitingTime / processes.size(), 1));
+        System.out.println("AVERAGE TURNAROUND TIME FOR PROCESSES: " + Precision.round(averageTurnaroundTime / processes.size(), 1));
     }
 }
