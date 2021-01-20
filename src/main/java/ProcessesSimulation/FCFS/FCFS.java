@@ -8,7 +8,19 @@ import org.apache.commons.math3.util.Precision;
 import java.util.Map;
 
 public class FCFS implements Algorithm {
+    private static int time = 0;
     private int totalTimeForSimulation = 0;
+
+    @Override
+    public boolean isFastMode() {
+        return fastMode;
+    }
+
+    @Override
+    public boolean isDisplayMode() {
+        return displayMode;
+    }
+
     private final boolean fastMode;
     private final boolean displayMode;
 
@@ -23,77 +35,74 @@ public class FCFS implements Algorithm {
     }
 
     @Override
-    public void run() throws InterruptedException {
+    public int getTime() {
+        return time;
+    }
+
+    @Override
+    public void run(Algorithm algorithm) throws InterruptedException {
         System.out.println("\n================= FCFS SIMULATION ======================");
+        Work.getWork().updateNewProcesses(algorithm);
         while (!Work.getWork().areCompleted()) {
-            for (Map.Entry<Process, String> process : Work.getWork().getProcesses().entrySet()) {
-                if (process.getKey().isComplete()) {
-                    continue;
+            if (Work.getWork().getNewProcesses().size() == 0) {
+                if (displayMode) {
+                    System.out.println("| No one process in turn, wait...                       |");
                 }
-                for (int i = 0; i < process.getKey().getBurstTime(); i++) {
-                    if (!process.getKey().isComplete()) {
-                        if (!process.getKey().isCanBeInterrupted()) {
-                            i--;
-                        }
-                        setWaitingAndCompleteTimeForProcesses(process.getKey());
-                        process.getKey().setLeftTime(process.getKey().getLeftTime() - 1);
-                        double completed = Precision.round(100 - process.getKey().getLeftTime() / ((double) process.getKey().getBurstTime() / 100), 1);
-                        String output = "| Waiting for process '" + process.getValue() + "'..." + " Completed: " + completed + "%";
-                        switch (output.length()) {
-                            case 52:
-                                output += "    |";
-                                break;
-                            case 53:
-                                output += "   |";
-                                break;
-                            case 54:
-                                output += "  |";
-                                break;
-                            case 55:
-                                output += " |";
-                                break;
-                            case 56:
-                                output += "|";
-                                break;
-                        }
-                        if (displayMode){
-                            System.out.println(output);
-                        }
-                        totalTimeForSimulation++;
-                        if (!fastMode) {
-                            Thread.sleep(100);
-                        }
-                    } else {
-                        break;
-                    }
+                time++;
+                totalTimeForSimulation++;
+                Work.getWork().updateNewProcesses(algorithm);
+                continue;
+            }
+            loadNewProcesses(algorithm);
+        }
+    }
+
+    private void loadNewProcesses(Algorithm algorithm) throws InterruptedException {
+        if (Work.getWork().getNewProcesses().size() > 0) {
+            for (Map.Entry<Process, Integer> process : Work.getWork().getNewProcesses().entrySet()) {
+                if (Work.getWork().getNewProcesses().containsValue(process.getValue())) {
+                    makeRound(process, algorithm);
                 }
             }
+        }
+        Work.getWork().updateNewProcesses(algorithm);
+        if (Work.getWork().getNewProcesses().size() > 0) {
+            loadNewProcesses(algorithm);
+        }
+    }
+
+    private void makeRound(Map.Entry<Process, Integer> process, Algorithm algorithm) throws InterruptedException {
+        while (!process.getKey().isComplete()) {
+            makeSteps(process, algorithm);
+            time++;
+            totalTimeForSimulation++;
+            Work.getWork().updateNewProcesses(algorithm);
         }
     }
 
     @Override
-    public void displaySimulation(Algorithm FCFS, Map<Process, String> processes) {
+    public void displaySimulation(Algorithm FCFS, Map<Process, Integer> processes) {
         System.out.println("========================================================");
         System.out.println("FCFS TOTAL TIME: " + FCFS.getTotalTimeForSimulation());
         double averageWaitingTime = 0.0;
         double averageTurnaroundTime = 0.0;
-        for (Map.Entry<Process, String> mapProcess : processes.entrySet()) {
+        for (Map.Entry<Process, Integer> mapProcess : processes.entrySet()) {
             String waiting = "WAITING TIME FOR PROCESS '" + mapProcess.getValue() + "': " + mapProcess.getKey().getTotalWaitingTime();
             switch (waiting.length()) {
-                case 38:
-                    waiting += "    ";
+                case 31:
+                    waiting += "    |";
                     break;
-                case 39:
-                    waiting += "   ";
+                case 32:
+                    waiting += "   |";
                     break;
-                case 40:
-                    waiting += "  ";
+                case 33:
+                    waiting += "  |";
                     break;
-                case 41:
-                    waiting += " ";
+                case 34:
+                    waiting += " |";
                     break;
                 default:
-                    waiting += "";
+                    waiting += "|";
                     break;
             }
             System.out.print("\n" + waiting);

@@ -2,6 +2,7 @@ package ProcessesSimulation;
 
 public class Process {
     private final int burstTime; // Czas wykonywania / Время выполнения процесса
+    private final int startTime; // Czas wykonywania / Время выполнения процесса
     private int leftTime;
     private int completedIn = 0;
     private int totalWaitingTime = 0;
@@ -43,7 +44,16 @@ public class Process {
         return canBeInterrupted;
     }
 
-    public Process(int burstTime, boolean canBeInterrupted) {
+    public int getStartTime() {
+        return startTime;
+    }
+
+    public boolean isStarted(Algorithm algorithm){
+        return startTime <= algorithm.getTime();
+    }
+
+    public Process(int burstTime, int startTime, boolean canBeInterrupted) {
+        this.startTime = startTime;
         this.burstTime = burstTime;
         this.leftTime = burstTime;
         this.canBeInterrupted = canBeInterrupted;
