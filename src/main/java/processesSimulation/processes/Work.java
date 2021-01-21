@@ -1,8 +1,9 @@
-package ProcessesSimulation;
+package processesSimulation.processes;
+
+import processesSimulation.algorithms.Algorithm;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Single class object PATTERN.

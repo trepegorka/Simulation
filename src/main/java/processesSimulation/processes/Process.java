@@ -1,4 +1,6 @@
-package ProcessesSimulation;
+package processesSimulation.processes;
+
+import processesSimulation.algorithms.Algorithm;
 
 public class Process {
     private final int burstTime; // Czas wykonywania / Время выполнения процесса

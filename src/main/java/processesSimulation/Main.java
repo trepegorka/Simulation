@@ -1,13 +1,14 @@
-package ProcessesSimulation;
+package processesSimulation;
 
-import ProcessesSimulation.FCFS.FCFS;
-import ProcessesSimulation.RoundRobin.RoundRobin;
-import org.apache.commons.math3.util.Precision;
+import processesSimulation.algorithms.Algorithm;
+import processesSimulation.algorithms.FCFS.FCFS;
+import processesSimulation.algorithms.RoundRobin.RoundRobin;
+import processesSimulation.processes.Process;
+import processesSimulation.processes.Processes;
+import processesSimulation.processes.Work;
 
-import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Random;
 
 /**
  * Processes simulations

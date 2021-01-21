@@ -1,4 +1,4 @@
-package ProcessesSimulation;
+package processesSimulation.processes;
 
 import java.io.*;
 import java.util.*;
@@ -26,7 +26,7 @@ public interface Processes {
     static void writeProcessesIntoFile(Map<Process, Integer> processes) throws IOException {
         BufferedWriter writer = null;
         try {
-            writer = new BufferedWriter(new FileWriter("src/main/java/ProcessesSimulation/processes.txt", false));
+            writer = new BufferedWriter(new FileWriter("src/main/java/processesSimulation/processes/processes.txt", false));
         } catch (FileNotFoundException e) {
             System.out.println("\n!! Problem with write processes into file: " + e.getMessage());
         } catch (IOException e) {
@@ -45,7 +45,7 @@ public interface Processes {
         Map<Process, Integer> processes = new LinkedHashMap<>();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new FileReader("src/main/java/ProcessesSimulation/processes.txt"));
+            reader = new BufferedReader(new FileReader("src/main/java/processesSimulation/processes/processes.txt"));
         } catch (FileNotFoundException e) {
             System.out.println("\n!! Problem with write processes into file: " + e.getMessage());
         }

@@ -1,5 +1,7 @@
-package ProcessesSimulation;
+package processesSimulation.algorithms;
 
+import processesSimulation.processes.Process;
+import processesSimulation.processes.Work;
 import org.apache.commons.math3.util.Precision;
 
 import java.util.Map;
